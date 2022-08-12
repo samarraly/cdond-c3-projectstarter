@@ -110,9 +110,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [frontend-scan]
+          keys: frontend-scan
       - run:
-          name: Scan-front-end 
+          name: Scan-frontend 
           command: |
             cd frontend
             npm install
@@ -128,9 +128,9 @@ jobs:
     steps:
       - checkout
       - restore_cache:
-          keys: [backend-scan]
+          keys: backend-scan
       - run:
-          name: Scan-back-end
+          name: Scan-backend
           command: |
             cd backend
             npm install
