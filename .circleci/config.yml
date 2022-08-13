@@ -143,7 +143,6 @@ jobs:
           paths: [backend/node_modules]
           key: backend-scan        
 
-
   deploy-infrastructure:
     docker:
       - image: amazon/aws-cli
@@ -181,6 +180,7 @@ jobs:
       - persist_to_workspace:
           root: ~/
           paths:
+            - project/.circleci/backend_public_url.txt
             - project/.circleci/ansible/inventory.txt
       # Here's where you will add some code to rollback on failure      
 
