@@ -119,7 +119,7 @@ jobs:
       - restore_cache: 
           keys: [frontend-scan]
       - run:
-          name: frontend scan 
+          name: frontend scan  
           command: |
             cd frontend
             npm install
@@ -214,24 +214,24 @@ jobs:
       # Here's where you will add some code to rollback on failure  
       - destroy-environment      
 
-  run-migrations:
-    docker:
-      - image: circleci/node:13.8.0
-    steps:
-      - checkout
-      - run:
-          name: Run migrations
-          command: |
-            cd backend
-            npm install
-            # Run and save the migration output
-            npm run migrations > migrations_dump.txt
-      - run:
-          name: Send migration results to memstash
-          command: |
-            # Your code here
-            exit 1
-     # Here's where you will add some code to rollback on failure      
+  # run-migrations:
+  #   docker:
+  #     - image: circleci/node:13.8.0
+  #   steps:
+  #     - checkout
+  #     - run:
+  #         name: Run migrations
+  #         command: |
+  #           cd backend
+  #           npm install
+  #           # Run and save the migration output
+  #           npm run migrations > migrations_dump.txt
+  #     - run:
+  #         name: Send migration results to memstash
+  #         command: |
+  #           # Your code here
+  #           exit 1
+  #    # Here's where you will add some code to rollback on failure      
 
 #   deploy-frontend:
 #     docker:
