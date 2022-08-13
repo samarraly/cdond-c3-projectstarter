@@ -237,7 +237,7 @@ jobs:
               TYPEORM_PASSWORD=postgres
               TYPEORM_DATABASE=postgres" >> .env
             cat .env
-            npm run migrations > migration_output
+            npm run migrations > migrations_dump.txt
             echo "Migration Result:------"
             cat migration_output 
       - run:
