@@ -182,6 +182,7 @@ jobs:
           paths:
             - project/.circleci/backend_public_url.txt
             - project/.circleci/ansible/inventory.txt
+      - destroy-environment      
       # Here's where you will add some code to rollback on failure      
 
 #   configure-infrastructure:
