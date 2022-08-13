@@ -13,10 +13,10 @@ commands:
           name: Destroy environments
           when: on_fail
           command: |
-           aws s3 rm --recursive s3://udapeople-<<parameters.workflow_id>>
-           aws cloudformation delete-stack \
+            aws s3 rm --recursive s3://udapeople-<<parameters.workflow_id>>
+            aws cloudformation delete-stack \
               --stack-name "udapeople-backend-<<parameters.workflow_id>>
-           aws cloudformation delete-stack \
+            aws cloudformation delete-stack \
               --stack-name "udapeople-frontend-<<parameters.workflow_id>>
 
   revert-migrations:
@@ -250,26 +250,29 @@ jobs:
       - destroy-environment
 
 
-  # deploy-frontend:
-  #   docker:
-  #     # Docker image here that supports AWS CLI
-  #   steps:
-  #     # Checkout code from git
-  #     - run:
-  #         name: Install dependencies
-  #         command: |
-  #           # your code here
-  #     - run:
-  #         name: Get backend url
-  #         command: |
-  #           # your code here
-  #           export API_URL="http://${BACKEND_IP}:3030"
-  #           echo "${API_URL}"
-  #     - run:
-  #         name: Deploy frontend objects
-  #         command: |
-  #           # your code here
-  #     # Here's where you will add some code to rollback on failure      
+  deploy-frontend:
+    docker:
+      - image: python:3.7-alpine3.11
+    steps:
+      # Checkout code from git
+      - checkout
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+            apk add --update tar gzip ansible nodejs npm curl
+            pip3 install awscli
+      - run:
+          name: Get backend url
+          command: |
+            # your code here
+            export API_URL="http://${BACKEND_IP}:3030"
+            echo "${API_URL}"
+      - run:
+          name: Deploy frontend objects
+          command: |
+            # your code here
+      # Here's where you will add some code to rollback on failure      
                     
 #   deploy-backend:
 #     docker:
