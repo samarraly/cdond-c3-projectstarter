@@ -339,7 +339,7 @@ jobs:
           name: Install dependencies
           command: |
             
-            apk add --update nodejs nodejs-npm
+            apk add --update nodejs nodejs-npm curl
             pip install awscli --upgrade 
       # - run:
       #     name: Get backend url
