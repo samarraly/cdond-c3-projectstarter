@@ -233,7 +233,7 @@ jobs:
               TYPEORM_HOST=database-1.c8cnswx5frwu.us-east-1.rds.amazonaws.com
               TYPEORM_PORT=5432
               TYPEORM_USERNAME=postgres
-              TYPEORM_PASSWORD=postgres
+              TYPEORM_PASSWORD=postgres   
               TYPEORM_DATABASE=postgres" >> .env
             cat .env
             npm run migrations > migrations_dump.txt
@@ -292,22 +292,22 @@ jobs:
       - destroy-environment
       - revert-migrations     
                     
-#   deploy-backend:
-#     docker:
-#       # Docker image here that supports Ansible
-#     steps:
-#       # Checkout code from git
-#       # Add ssh keys with fingerprint
-#       # attach workspace
-#       - run:
-#           name: Install dependencies
-#           command: |
-#             # your code here
-#       - run:
-#           name: Deploy backend
-#           command: |
-#             # your code here
-#       # Here's where you will add some code to rollback on failure  
+  deploy-backend:
+    docker:
+      # Docker image here that supports Ansible
+    steps:
+      # Checkout code from git
+      # Add ssh keys with fingerprint
+      # attach workspace
+      - run:
+          name: Install dependencies
+          command: |
+            # your code here
+      - run:
+          name: Deploy backend
+          command: |
+            # your code here
+      # Here's where you will add some code to rollback on failure  
 
 #   smoke-test:
 #     docker:
