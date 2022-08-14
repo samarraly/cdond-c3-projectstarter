@@ -341,17 +341,17 @@ jobs:
             
             apk add --update nodejs nodejs-npm
             pip install awscli --upgrade 
-      - run:
-          name: Get backend url
-          command: |
+      # - run:
+      #     name: Get backend url
+      #     command: |
             
-            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
-            echo $BACKEND_IP
+      #       export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+      #       echo $BACKEND_IP
       - run:
           name: Backend smoke test.
           command: |
            
-            export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
+            BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
             echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
@@ -382,7 +382,7 @@ jobs:
     docker:
       - image: amazon/aws-cli
     steps:
-      # Checkout code from git
+     - checkout
       - run:
           name: Install dependencies
           command: |
@@ -391,7 +391,12 @@ jobs:
           name: Update cloudfront distribution
           command: |
             # your code here
-      # Here's where you will add some code to rollback on failure  
+            aws cloudformation update-stack \
+              --use-previous-template --stack-name InitialStack \
+              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false
+      # Here's where you will add some code to rollback on failure
+      - destroy-environment
+      - revert-migrations  
 
 # cleanup:
 #     docker:
