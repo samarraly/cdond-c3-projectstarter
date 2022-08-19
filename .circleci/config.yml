@@ -338,19 +338,8 @@ jobs:
           name: Deploy backend
           command: |
             # your code here
-            cd backend
-            npm i
-            npm run build
-            cd ..
-            cd .circleci/ansible
-            mkdir files
-            cd files
-            # Zip the directory
-            tar -C ../../../backend -czvf artifact.tar.gz .
-            # cd .circleci/ansible
-            cd ../
-            echo "Contents  of the inventory.txt file is -------"
-            cat inventory.txt
+            cd ~/project/.circleci/ansible
+            export ANSIBLE_HOST_KEY_CHECKING=False
             ansible-playbook -i inventory.txt deploy-backend.yml
       # Here's where you will add some code to rollback on failure
       - destroy-environment
