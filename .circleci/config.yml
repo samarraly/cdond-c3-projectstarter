@@ -194,7 +194,8 @@ jobs:
   configure-infrastructure:
     docker:
       # Docker image here that supports Ansible
-      - image: cimg/base:stable
+      # - image: cimg/base:stable
+      - image: python:3.7-alpine3.11
     steps:
       - checkout
       - add_ssh_keys:
@@ -253,7 +254,8 @@ jobs:
 
   deploy-frontend:
     docker:
-      - image: cimg/base:stable
+      # - image: cimg/base:stable
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       - checkout
@@ -295,7 +297,8 @@ jobs:
   deploy-backend:
     docker:
       # Docker image here that supports Ansible
-       - image: cimg/base:stable
+      #  - image: cimg/base:stable
+      - image: python:3.7-alpine3.11
     steps:
       # Checkout code from git
       # Add ssh keys with fingerprint
@@ -336,7 +339,8 @@ jobs:
   smoke-test:
     docker:
       # Lightweight Docker image 
-      - image: cimg/base:stable
+      # - image: cimg/base:stable
+      - image: python:3.7-alpine3.11
     steps:
 
       # Checkout code from git
