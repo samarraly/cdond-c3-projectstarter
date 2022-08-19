@@ -19,17 +19,14 @@ commands:
             aws cloudformation delete-stack \
               --stack-name "udapeople-frontend-<<parameters.workflow_id>>
 
-  install_node_js:
-    description: Install Node.js 13
-    steps:
-      - run:
-          name: Install Node.js 13
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_13.x | sude -E bash -
-            sudo apt install -y nodejs
-
-
-
+  # install_node_js:
+  #   description: Install Node.js 13
+  #   steps:
+  #     - run:
+  #         name: Install Node.js 13
+  #         command: |
+  #           curl -fsSL https://deb.nodesource.com/setup_13.x | sude -E bash -
+  #           sudo apt install -y nodejs
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
     parameters:
@@ -325,14 +322,14 @@ jobs:
             # your code here
             apk add --update ansible nodejs npm rsync openssh
             pip install awscli
-      # - run:
-      #     name: Package  
-      #     command: |
-      #       cd backend
-      #       npm run build
-      #       tar -czf artifact.tar.gz dist/* package*
-      #       cd ..
-      #       cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
+      - run:
+          name: Package  
+          command: |
+            cd backend
+            npm run build
+            tar -czf artifact.tar.gz dist/* package*
+            cd ..
+            cp backend/artifact.tar.gz .circleci/ansible/roles/deploy/files
            
       - run:
           name: Deploy backend
