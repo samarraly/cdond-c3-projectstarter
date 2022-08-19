@@ -308,7 +308,7 @@ jobs:
           TYPEORM_PASSWORD: $TYPEORM_PASSWORD
           TYPEORM_DATABASE: $TYPEORM_DATABASE
           TYPEORM_PORT: $TYPEORM_PORT
-          TYPEORM_ENTITIES: $TYPEORM_ENTITIES
+          TYPEORM_ENTITIES: ./src/modules/domain/**/*.entity.ts
     steps:
       - checkout
       - add_ssh_keys:
