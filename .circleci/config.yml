@@ -315,8 +315,8 @@ jobs:
             apk add --update tar gzip ansible nodejs npm curl
             pip install awscli
       - run:
-        name: Package  
-        command: |
+          name: Package  
+          command: |
             cd backend
             npm run build
             tar -czf artifact.tar.gz dist/* package*
