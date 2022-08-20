@@ -403,19 +403,22 @@ jobs:
           command: |
             # your code here
             export OLD_WORKFLOW_ID=$(aws cloudformation \
-              list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
-              --no-paginate --output text)
+            list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
+            --no-paginate --output text)
             echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
             curl https://kvdb.io/33GxcCpH7rHocPuWALvF32/old_workflow_id -d "${OLD_WORKFLOW_ID}"
       - run:
           name: Update cloudfront distribution
           command: |
             # your code here
-            aws cloudformation deploy \
-              --template-file .circleci/files/cloudfront.yml \
-              --stack-name InitialStack-$OLD_WORKFLOW_ID
-              --parameter-overrides WorkflowID="${CIRCLE_WORKFLOW_ID:0:7}" \
-            echo Current Workflow Id:"${OLD_WORKFLOW_ID}"
+            # aws cloudformation deploy \
+            #   --template-file .circleci/files/cloudfront.yml \
+            #   --stack-name InitialStack-$OLD_WORKFLOW_ID
+            #   --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
+            # echo Current Workflow Id:"${OLD_WORKFLOW_ID}"
+            aws cloudformation update-stack \
+              --use-previous-template --stack-name InitialStack \
+              --parameters ParameterKey=WorkflowID,ParameterValue=${CIRCLE_WORKFLOW_ID:0:7},UsePreviousValue=false
       # Here's where you will add some code to rollback on failure 
       - destroy-environment
       - revert-migrations  
