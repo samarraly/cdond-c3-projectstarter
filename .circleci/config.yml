@@ -2,7 +2,6 @@ version: 2.1
 orbs: 
   slack: circleci/slack@4.10.1
 commands:
-
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     # parameters:
@@ -198,8 +197,10 @@ jobs:
           paths:
             - project/.circleci/backend_public_url.txt
             - project/.circleci/ansible/inventory.txt
-      - destroy-environment      
-      # Here's where you will add some code to rollback on failure      
+
+         
+      # Here's where you will add some code to rollback on failure   
+      - destroy-environment     
 
   configure-infrastructure:
     docker:
@@ -390,8 +391,7 @@ jobs:
               fi
       # Here's where you will add some code to rollback on failure
       - destroy-environment
-
-      - revert-migrations   
+      # - revert-migrations   
 
   cloudfront-update:
     docker:
@@ -416,7 +416,7 @@ jobs:
             --stack-name InitialStack \
             --parameter-overrides WorkflowID="udapeople-${CIRCLE_WORKFLOW_ID:0:7}" \
             --tags project=udapeople
-      # Here's where you will add some code to rollback on failure
+      # Here's where you will add some code to rollback on failure 
       - destroy-environment
       - revert-migrations  
 
@@ -426,9 +426,9 @@ cleanup:
       - image: amazon/aws-cli
     steps:
       - checkout
-      - run:
-          # name: Get old stack workflow id
-          # command: |
+      # - run:
+      #     # name: Get old stack workflow id
+      #     # command: |
           
       - run:
           name: Remove old stacks and files
