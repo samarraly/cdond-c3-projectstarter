@@ -301,8 +301,8 @@ jobs:
             tar -czvf artifact-"${CIRCLE_WORKFLOW_ID:0:7}".tar.gz dist
             aws s3 cp dist s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment
-      # - revert-migrations     
+      - destroy-environment
+      - revert-migrations     
                     
   deploy-backend:
     docker:
@@ -366,7 +366,6 @@ jobs:
       - run:
           name: Backend smoke test.
           command: |
-           
             BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
             echo $BACKEND_IP
             export API_URL="http://${BACKEND_IP}:3030"
@@ -386,13 +385,13 @@ jobs:
               echo ${URL} 
               if curl -s ${URL} | grep "Welcome"
               then
-                exit 1
+                exit 0
               else
                 exit 1
               fi
       # Here's where you will add some code to rollback on failure
-      # - destroy-environment
-      # - revert-migrations   
+      - destroy-environment
+      - revert-migrations   
 
   cloudfront-update:
     docker:
