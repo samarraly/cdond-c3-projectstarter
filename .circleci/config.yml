@@ -2,6 +2,7 @@ version: 2.1
 orbs: 
   slack: circleci/slack@4.10.1
 commands:
+
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
     parameters:
@@ -16,6 +17,7 @@ commands:
             aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
             aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.workflow_id>>"
             aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.workflow_id>>"
+            echo "Destroying environment: << parameters.workflow_id >> "
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -358,7 +360,6 @@ jobs:
       - run:
           name: Get backend url
           command: |
-            
             export BACKEND_IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=backend-${CIRCLE_WORKFLOW_ID:0:7}" --query 'Reservations[*].Instances[*].PublicIpAddress' --output text)
             echo $BACKEND_IP
       - run:
@@ -389,6 +390,7 @@ jobs:
               fi
       # Here's where you will add some code to rollback on failure
       - destroy-environment
+
       - revert-migrations   
 
   cloudfront-update:
@@ -474,7 +476,7 @@ workflows:
           requires: [run-migrations]
       - smoke-test:
           requires: [deploy-backend, deploy-frontend]
-      # - cloudfront-update:
-      #     requires: [smoke-test]
+      - cloudfront-update:
+          requires: [smoke-test]
       # - cleanup:
       #     requires: [cloudfront-update] 
