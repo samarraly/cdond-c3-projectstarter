@@ -38,15 +38,15 @@ commands:
                 npm install
                 npm run migration:revert
             fi  
-  install-nodejs:
-    description: Install_NodeJS 13
-    steps:
-      - run:
-          name: Install_NodeJS 13
-          when: on_fail
-          command: |
-            curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E Bash -
-            sudo apt install -y nodejs     
+  # install-nodejs:
+  #   description: Install_NodeJS 13
+  #   steps:
+  #     - run:
+  #         name: Install_NodeJS 13
+  #         when: on_fail
+  #         command: |
+  #           curl -fsSL https://deb.nodesource.com/setup_13.x | sudo -E Bash -
+  #           sudo apt install -y nodejs     
 
 
 jobs:
@@ -269,7 +269,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - install-nodejs
+      # - install-nodejs
       - add_ssh_keys:
           fingerprints: ['d1:4c:36:8c:e5:63:a2:96:8f:ed:3b:20:a4:7a:49:c4'] 
       - attach_workspace:
@@ -277,9 +277,7 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            # apk add --update tar gzip ansible nodejs npm curl
-            # pip3 install awscli
-            apk add --update tar gzip ansible npm curl
+            apk add --update tar gzip ansible nodejs npm curl
             pip3 install awscli
       - run:
           name: Get backend url
@@ -312,7 +310,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - install-nodejs
+      # - install-nodejs
       - add_ssh_keys:
           fingerprints: ['d1:4c:36:8c:e5:63:a2:96:8f:ed:3b:20:a4:7a:49:c4'] 
       - attach_workspace:
@@ -321,11 +319,8 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            # apk add --update tar gzip ansible nodejs npm curl
-            # pip install awscli
-            apk add --update tar gzip ansible npm curl
-            pip install awscli  
-            
+            apk add --update tar gzip ansible nodejs npm curl
+            pip install awscli
       - run:
           name: Deploy backend
           command: |
@@ -360,7 +355,6 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-            
             apk add --update nodejs npm curl
             pip install awscli --upgrade 
       - run:
