@@ -38,7 +38,7 @@ commands:
                 npm install
                 npm run migration:revert
             fi  
-  Install_nodejs:
+  install-nodejs:
     description: Install_NodeJS 13
     steps:
       - run:
@@ -269,7 +269,7 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - Install_nodejs
+      - install-nodejs
       - add_ssh_keys:
           fingerprints: ['d1:4c:36:8c:e5:63:a2:96:8f:ed:3b:20:a4:7a:49:c4'] 
       - attach_workspace:
@@ -312,7 +312,7 @@ jobs:
       - image: python:3.7-alpine3.11
     steps:
       - checkout
-      - Install_nodejs
+      - install-nodejs
       - add_ssh_keys:
           fingerprints: ['d1:4c:36:8c:e5:63:a2:96:8f:ed:3b:20:a4:7a:49:c4'] 
       - attach_workspace:
