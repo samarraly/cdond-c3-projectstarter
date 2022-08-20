@@ -323,7 +323,7 @@ jobs:
             # your code here
             # apk add --update tar gzip ansible nodejs npm curl
             # pip install awscli
-            apk add --update tar gzip ansible nodejs npm curl
+            apk add --update tar gzip ansible npm curl
             pip install awscli  
             
       - run:
