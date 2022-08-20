@@ -5,19 +5,19 @@ commands:
 
   destroy-environment:
     description: Destroy back-end and front-end cloudformation stacks given a workflow ID.
-    parameters:
-      workflow_id:
-        default: ${CIRCLE_WORKFLOW_ID:0:7}
-        type: string        
+    # parameters:
+    #   workflow_id:
+    #     default: ${CIRCLE_WORKFLOW_ID:0:7}
+    #     type: string        
     steps:
       - run:
           name: Destroy environments
           when: on_fail
           command: |
-            aws s3 rm s3://udapeople-<<parameters.workflow_id>> --recursive
-            aws cloudformation delete-stack --stack-name "udapeople-backend-<<parameters.workflow_id>>"
-            aws cloudformation delete-stack --stack-name "udapeople-frontend-<<parameters.workflow_id>>"
-            echo "Destroying environment: << parameters.workflow_id >> "
+            aws s3 rm s3://udapeople-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+            aws cloudformation delete-stack --stack-name "udapeople-backend-${CIRCLE_WORKFLOW_ID:0:7}"
+            aws cloudformation delete-stack --stack-name "udapeople-frontend-${CIRCLE_WORKFLOW_ID:0:7}"
+            echo "Destroying environment: ${CIRCLE_WORKFLOW_ID:0:7} "
 
   revert-migrations:
     description: Revert the last migration if successfully run in the current workflow.
@@ -405,10 +405,8 @@ jobs:
             export OLD_WORKFLOW_ID=$(aws cloudformation \
             list-exports --query "Exports[?Name==\`WorkflowID\`].Value" \
             --no-paginate --output text)
-            # echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
-            echo $OLD_WORKFLOW_ID >> OLD_WORKFLOW_ID.txt
-            cat ~/OLD_WORKFLOW_ID.txt
-            # curl https://kvdb.io/33GxcCpH7rHocPuWALvF32/old_workflow_id -d "${OLD_WORKFLOW_ID}"
+            echo "Old Wokflow ID: $OLD_WORKFLOW_ID"
+            curl https://kvdb.io/33GxcCpH7rHocPuWALvF32/old_workflow_id -d "${OLD_WORKFLOW_ID}"
       - run:
           name: Update cloudfront distribution
           command: |
@@ -440,7 +438,8 @@ cleanup:
                     --no-paginate --output text)
             echo OldWorkflowID: "${OldWorkflowID}"
             echo CIRCLE_WORKFLOW_ID "${CIRCLE_WORKFLOW_ID:0:7}"
-            # Fetch the stack names          
+            # Fetch the stack names         
+
             export STACKS=($(aws cloudformation list-stacks --query "StackSummaries[*].StackName" \
                     --stack-status-filter CREATE_COMPLETE --no-paginate --output text)) 
             echo Stack names: "${STACKS[@]}"
